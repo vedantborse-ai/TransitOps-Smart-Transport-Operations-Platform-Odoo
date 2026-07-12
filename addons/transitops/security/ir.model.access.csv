@@ -2,6 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_transitops_vehicle,transitops.vehicle,model_transitops_vehicle,,1,1,1,1
 access_transitops_driver,transitops.driver,model_transitops_driver,,1,1,1,1
 access_transitops_trip,transitops.trip,model_transitops_trip,,1,1,1,1
-access_transitops_fuel_log,transitops.fuel_log,model_transitops_fuel_log,,1,1,1,1
+access_transitops_fuel_log,transitops.fuel.log,model_transitops_fuel_log,,1,1,1,1
 access_transitops_expense,transitops.expense,model_transitops_expense,,1,1,1,1
 access_transitops_maintenance,transitops.maintenance,model_transitops_maintenance,,1,1,1,1
+access_transitops_vehicle_odometer_log,transitops.vehicle.odometer.log,model_transitops_vehicle_odometer_log,,1,1,1,1
