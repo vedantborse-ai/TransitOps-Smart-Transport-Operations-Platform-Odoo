@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Fuel Log Tree View -->
+        <record id="view_transitops_fuel_log_tree" model="ir.ui.view">
+            <field name="name">transitops.fuel.log.tree</field>
+            <field name="model">transitops.fuel.log</field>
+            <field name="arch" type="xml">
+                <tree string="Fuel Logs" editable="bottom">
+                    <field name="date"/>
+                    <field name="vehicle_id"/>
+                    <field name="liters" sum="Total Liters"/>
+                    <field name="cost" sum="Total Fuel Cost"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Fuel Log Pivot View -->
+        <record id="view_transitops_fuel_log_pivot" model="ir.ui.view">
+            <field name="name">transitops.fuel.log.pivot</field>
+            <field name="model">transitops.fuel.log</field>
+            <field name="arch" type="xml">
+                <pivot string="Fuel Analysis">
+                    <field name="vehicle_id" type="row"/>
+                    <field name="date" interval="month" type="col"/>
+                    <field name="cost" type="measure"/>
+                    <field name="liters" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Fuel Log Graph View -->
+        <record id="view_transitops_fuel_log_graph" model="ir.ui.view">
+            <field name="name">transitops.fuel.log.graph</field>
+            <field name="model">transitops.fuel.log</field>
+            <field name="arch" type="xml">
+                <graph string="Fuel Logs By Vehicle" type="bar">
+                    <field name="vehicle_id"/>
+                    <field name="cost" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Expense Tree View -->
+        <record id="view_transitops_expense_tree" model="ir.ui.view">
+            <field name="name">transitops.expense.tree</field>
+            <field name="model">transitops.expense</field>
+            <field name="arch" type="xml">
+                <tree string="Expenses" editable="bottom">
+                    <field name="date"/>
+                    <field name="vehicle_id"/>
+                    <field name="expense_type"/>
+                    <field name="description"/>
+                    <field name="cost" sum="Total Cost"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Expense Pivot View -->
+        <record id="view_transitops_expense_pivot" model="ir.ui.view">
+            <field name="name">transitops.expense.pivot</field>
+            <field name="model">transitops.expense</field>
+            <field name="arch" type="xml">
+                <pivot string="Expense Analysis">
+                    <field name="vehicle_id" type="row"/>
+                    <field name="expense_type" type="col"/>
+                    <field name="cost" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Action to open Fuel Logs -->
+        <record id="action_transitops_fuel_log" model="ir.actions.act_window">
+            <field name="name">Fuel Logs</field>
+            <field name="res_model">transitops.fuel.log</field>
+            <field name="view_mode">tree,pivot,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Record fuel log details!
+                </p>
+                <p>
+                    Track liters consumed and fuel cost to automatically compute fleet fuel efficiency.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action to open Expenses -->
+        <record id="action_transitops_expense" model="ir.actions.act_window">
+            <field name="name">Other Expenses</field>
+            <field name="res_model">transitops.expense</field>
+            <field name="view_mode">tree,pivot</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Record general operational expenses!
+                </p>
+                <p>
+                    Log tolls, insurance, taxes, and other miscellaneous expenses per vehicle.
+                </p>
+            </field>
+        </record>
+
+        <!-- Link Menu Item to Actions -->
+        <menuitem id="menu_transitops_fuel_log_action"
+                  name="Fuel Logs"
+                  action="action_transitops_fuel_log"
+                  parent="menu_transitops_fuel_log"
+                  sequence="10"/>
+
+        <menuitem id="menu_transitops_expense_action"
+                  name="Other Expenses"
+                  action="action_transitops_expense"
+                  parent="menu_transitops_expense"
+                  sequence="10"/>
+    </data>
+</odoo>
