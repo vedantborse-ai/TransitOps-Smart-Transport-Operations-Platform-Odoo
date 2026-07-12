@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Trip Report Template -->
+        <template id="report_trip_document">
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="doc.with_context(lang=user_id.lang)"/>
+                <div class="page">
+                    <div class="oe_structure"/>
+                    
+                    <h2 class="mt-4">Trip Details: <span t-field="doc.name"/></h2>
+                    
+                    <div class="row mt-4 mb-4">
+                        <div class="col-6">
+                            <strong>Source:</strong> <span t-field="doc.source"/><br/>
+                            <strong>Destination:</strong> <span t-field="doc.destination"/><br/>
+                            <strong>Planned Distance:</strong> <span t-field="doc.planned_distance"/> km<br/>
+                        </div>
+                        <div class="col-6">
+                            <strong>Vehicle:</strong> <span t-field="doc.vehicle_id.name"/> (<span t-field="doc.vehicle_id.registration_number"/>)<br/>
+                            <strong>Driver:</strong> <span t-field="doc.driver_id.name"/><br/>
+                            <strong>Status:</strong> <span t-field="doc.status"/><br/>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm o_main_table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Details</th>
+                                <th class="text-end">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cargo Weight</td>
+                                <td>Load assigned to vehicle</td>
+                                <td class="text-end"><span t-field="doc.cargo_weight"/> kg</td>
+                            </tr>
+                            <tr>
+                                <td>Revenue</td>
+                                <td>Total earnings for this trip</td>
+                                <td class="text-end"><span t-field="doc.revenue" t-options='{"widget": "monetary", "display_currency": user_id.company_id.currency_id}'/></td>
+                            </tr>
+                            <t t-if="doc.status == 'completed'">
+                                <tr>
+                                    <td>Fuel Consumed</td>
+                                    <td>Liters of fuel used</td>
+                                    <td class="text-end"><span t-field="doc.fuel_consumed"/> Liters</td>
+                                </tr>
+                                <tr>
+                                    <td>Fuel Cost</td>
+                                    <td>Cost of fuel for trip</td>
+                                    <td class="text-end"><span t-field="doc.fuel_cost" t-options='{"widget": "monetary", "display_currency": user_id.company_id.currency_id}'/></td>
+                                </tr>
+                                <tr>
+                                    <td>Final Odometer</td>
+                                    <td>Vehicle odometer reading after trip</td>
+                                    <td class="text-end"><span t-field="doc.final_odometer"/> km</td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_trip">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="transitops.report_trip_document" t-lang="user_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
