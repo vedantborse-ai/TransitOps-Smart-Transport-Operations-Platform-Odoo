@@ -61,3 +61,10 @@ class TransitopsMaintenance(models.Model):
             record.status = 'closed'
             if record.vehicle_id.status == 'in_shop':
                 record.vehicle_id.status = 'available'
+
+    def unlink(self):
+        for record in self:
+            if record.status == 'in_progress':
+                if record.vehicle_id and record.vehicle_id.status == 'in_shop':
+                    record.vehicle_id.status = 'available'
+        return super(TransitopsMaintenance, self).unlink()

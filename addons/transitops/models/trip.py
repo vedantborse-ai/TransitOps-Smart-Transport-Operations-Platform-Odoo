@@ -125,3 +125,12 @@ class TransitopsTrip(models.Model):
                 trip.driver_id.status = 'available'
                 
             trip.status = 'cancelled'
+
+    def unlink(self):
+        for trip in self:
+            if trip.status == 'dispatched':
+                if trip.vehicle_id and trip.vehicle_id.status == 'on_trip':
+                    trip.vehicle_id.status = 'available'
+                if trip.driver_id and trip.driver_id.status == 'on_trip':
+                    trip.driver_id.status = 'available'
+        return super(TransitopsTrip, self).unlink()
