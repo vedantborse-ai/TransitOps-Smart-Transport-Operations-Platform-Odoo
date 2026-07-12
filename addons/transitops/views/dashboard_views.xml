@@ -8,23 +8,25 @@
             <field name="arch" type="xml">
                 <form string="Fleet KPI Dashboard" create="false" delete="false" edit="false">
                     <sheet>
+                        <field name="currency_id" invisible="1"/>
                         <div class="oe_title text-center mb-4">
                             <h1>TransitOps Fleet Dashboard</h1>
                             <p class="text-muted">Real-time Smart Transport Operations Metrics</p>
                         </div>
                         
-                        <!-- Row 1: Vehicles & Utilization -->
+                        <!-- Section 1: Fleet Overview (Vehicles) -->
+                        <h3 class="mb-3 text-primary" style="border-bottom: 2px solid #007bff; padding-bottom: 5px;">🚚 Fleet Overview (Vehicles)</h3>
                         <div class="row text-center mb-4">
-                            <div class="col-sm-3 col-12 mb-3">
+                            <div class="col-sm-2 col-12 mb-3">
                                 <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
-                                    <div class="h2 text-primary font-weight-bold mb-1">
-                                        <field name="active_vehicles_count"/>
+                                    <div class="h2 text-dark font-weight-bold mb-1">
+                                        <field name="total_vehicles_count"/>
                                     </div>
-                                    <div class="text-muted font-weight-bold uppercase small">Active Vehicles</div>
-                                    <small class="text-info mt-1 d-block">Vehicles on active trips</small>
+                                    <div class="text-muted font-weight-bold uppercase small">Total Vehicles</div>
+                                    <small class="text-secondary mt-1 d-block">All registered fleet</small>
                                 </div>
                             </div>
-                            <div class="col-sm-3 col-12 mb-3">
+                            <div class="col-sm-2 col-12 mb-3">
                                 <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
                                     <div class="h2 text-success font-weight-bold mb-1">
                                         <field name="available_vehicles_count"/>
@@ -35,53 +37,171 @@
                             </div>
                             <div class="col-sm-3 col-12 mb-3">
                                 <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
-                                    <div class="h2 text-warning font-weight-bold mb-1">
-                                        <field name="maintenance_vehicles_count"/>
+                                    <div class="h2 text-primary font-weight-bold mb-1">
+                                        <field name="vehicles_on_trip_count"/>
                                     </div>
-                                    <div class="text-muted font-weight-bold uppercase small">In Maintenance</div>
-                                    <small class="text-warning mt-1 d-block">Vehicles in repair shop</small>
+                                    <div class="text-muted font-weight-bold uppercase small">Vehicles On Trip</div>
+                                    <small class="text-primary mt-1 d-block">Active transit missions</small>
                                 </div>
                             </div>
                             <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-warning font-weight-bold mb-1">
+                                        <field name="vehicles_in_maintenance_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">In Maintenance</div>
+                                    <small class="text-warning mt-1 d-block">In repair shop</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-12 mb-3">
                                 <div class="card border-0 bg-primary text-white shadow-sm p-3" style="border-radius: 8px;">
                                     <div class="h2 font-weight-bold mb-1">
                                         <field name="fleet_utilization_rate" widget="float" digits="[16,1]"/>%
                                     </div>
-                                    <div class="font-weight-bold uppercase small">Fleet Utilization</div>
-                                    <small class="text-white-50 mt-1 d-block">Active / Total fleet</small>
+                                    <div class="font-weight-bold uppercase small">Utilization Rate</div>
+                                    <small class="text-white-50 mt-1 d-block">On Trip / Active Fleet</small>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Row 2: Trips & Drivers -->
+                        <!-- Section 2: Driver & Team Analytics -->
+                        <h3 class="mb-3 text-info" style="border-bottom: 2px solid #17a2b8; padding-bottom: 5px;">🧑‍✈️ Driver &amp; Team Status</h3>
                         <div class="row text-center mb-4">
-                            <div class="col-sm-4 col-12 mb-3">
-                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
-                                    <div class="h2 text-info font-weight-bold mb-1">
-                                        <field name="active_trips_count"/>
-                                    </div>
-                                    <div class="text-muted font-weight-bold uppercase small">Active Trips</div>
-                                    <small class="text-muted mt-1 d-block">Ongoing dispatches</small>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 col-12 mb-3">
-                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
-                                    <div class="h2 text-secondary font-weight-bold mb-1">
-                                        <field name="pending_trips_count"/>
-                                    </div>
-                                    <div class="text-muted font-weight-bold uppercase small">Pending Trips</div>
-                                    <small class="text-muted mt-1 d-block">Draft/un-dispatched trips</small>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 col-12 mb-3">
+                            <div class="col-sm-3 col-12 mb-3">
                                 <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
                                     <div class="h2 text-dark font-weight-bold mb-1">
-                                        <field name="drivers_on_duty_count"/>
+                                        <field name="total_drivers_count"/>
                                     </div>
-                                    <div class="text-muted font-weight-bold uppercase small">Drivers On Duty</div>
-                                    <small class="text-muted mt-1 d-block">Available or on-trip drivers</small>
+                                    <div class="text-muted font-weight-bold uppercase small">Total Drivers</div>
+                                    <small class="text-secondary mt-1 d-block">Active profiles</small>
                                 </div>
                             </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-success font-weight-bold mb-1">
+                                        <field name="drivers_available_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Available Drivers</div>
+                                    <small class="text-success mt-1 d-block">Ready to assign</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-primary font-weight-bold mb-1">
+                                        <field name="drivers_on_trip_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Drivers On Trip</div>
+                                    <small class="text-primary mt-1 d-block">Currently driving</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-info text-white shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 font-weight-bold mb-1">
+                                        <field name="avg_driver_safety_score" widget="float" digits="[16,1]"/>
+                                    </div>
+                                    <div class="font-weight-bold uppercase small">Avg Safety Score</div>
+                                    <small class="text-white-50 mt-1 d-block">Active fleet drivers</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Operations & Trips -->
+                        <h3 class="mb-3 text-secondary" style="border-bottom: 2px solid #6c757d; padding-bottom: 5px;">🗺️ Dispatch &amp; Operations</h3>
+                        <div class="row text-center mb-4">
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-dark font-weight-bold mb-1">
+                                        <field name="total_trips_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Total Trips</div>
+                                    <small class="text-secondary mt-1 d-block">Historical dispatches</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-warning font-weight-bold mb-1">
+                                        <field name="dispatched_trips_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Active/Dispatched</div>
+                                    <small class="text-warning mt-1 d-block">Ongoing transit</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-success font-weight-bold mb-1">
+                                        <field name="completed_trips_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Completed Trips</div>
+                                    <small class="text-success mt-1 d-block">Successfully finished</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-danger font-weight-bold mb-1">
+                                        <field name="cancelled_trips_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Cancelled Trips</div>
+                                    <small class="text-danger mt-1 d-block">Aborted runs</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Financial Performance -->
+                        <h3 class="mb-3 text-success" style="border-bottom: 2px solid #28a745; padding-bottom: 5px;">💰 Financial &amp; Fuel Analytics</h3>
+                        <div class="row text-center mb-4">
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 shadow-sm p-3" style="border-radius: 8px; background-color: #eafaf1; color: #28a745;">
+                                    <div class="h2 font-weight-bold mb-1">
+                                        <field name="total_revenue" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div class="font-weight-bold uppercase small">Total Revenue</div>
+                                    <small class="text-success mt-1 d-block">Completed trip earnings</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 shadow-sm p-3" style="border-radius: 8px; background-color: #fdf2f2; color: #dc3545;">
+                                    <div class="h2 font-weight-bold mb-1">
+                                        <field name="total_operational_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div class="font-weight-bold uppercase small">Operational Cost</div>
+                                    <small class="text-danger mt-1 d-block">Fuel + Maint + Other</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-info font-weight-bold mb-1">
+                                        <field name="total_fuel_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Fuel Expense</div>
+                                    <small class="text-info mt-1 d-block">Direct fuel cost</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-warning font-weight-bold mb-1">
+                                        <field name="total_maintenance_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Maintenance</div>
+                                    <small class="text-warning mt-1 d-block">Downtime costs</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-12 mb-3">
+                                <div class="card border-0 bg-dark text-white shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 font-weight-bold mb-1">
+                                        <field name="avg_fuel_efficiency" widget="float" digits="[16,2]"/>
+                                    </div>
+                                    <div class="font-weight-bold uppercase small">Avg Fuel Efficiency</div>
+                                    <small class="text-white-50 mt-1 d-block">km/L across fleet</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backwards compatibility hidden fields -->
+                        <div invisible="1">
+                            <field name="active_vehicles_count"/>
+                            <field name="active_trips_count"/>
+                            <field name="pending_trips_count"/>
+                            <field name="drivers_on_duty_count"/>
                         </div>
                     </sheet>
                 </form>
@@ -134,6 +254,56 @@
             </field>
         </record>
 
+        <!-- 1. Bar Chart for Revenue vs Operational Cost (Vehicle model) -->
+        <record id="view_transitops_vehicle_revenue_cost_graph" model="ir.ui.view">
+            <field name="name">transitops.vehicle.revenue_cost.graph</field>
+            <field name="model">transitops.vehicle</field>
+            <field name="arch" type="xml">
+                <graph string="Revenue vs Operational Cost" type="bar" sample="1">
+                    <field name="name"/>
+                    <field name="total_revenue" type="measure"/>
+                    <field name="total_operational_cost" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- 2. Pie Chart for Vehicle Status Distribution (Vehicle model) -->
+        <record id="view_transitops_vehicle_status_pie" model="ir.ui.view">
+            <field name="name">transitops.vehicle.status.pie</field>
+            <field name="model">transitops.vehicle</field>
+            <field name="arch" type="xml">
+                <graph string="Vehicle Status Distribution" type="pie" sample="1">
+                    <field name="status"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- 3. Graph showing Trips by Status (Trip model) -->
+        <record id="view_transitops_trip_status_graph" model="ir.ui.view">
+            <field name="name">transitops.trip.status.graph</field>
+            <field name="model">transitops.trip</field>
+            <field name="arch" type="xml">
+                <graph string="Trips by Status" type="bar" sample="1">
+                    <field name="status"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- 4. Trips Pivot View -->
+        <record id="view_transitops_trip_pivot" model="ir.ui.view">
+            <field name="name">transitops.trip.pivot</field>
+            <field name="model">transitops.trip</field>
+            <field name="arch" type="xml">
+                <pivot string="Trip Analytics" sample="1">
+                    <field name="vehicle_id" type="row"/>
+                    <field name="status" type="col"/>
+                    <field name="revenue" type="measure"/>
+                    <field name="planned_distance" type="measure"/>
+                    <field name="cargo_weight" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
         <!-- Action to open Analytics Pivot/Graph -->
         <record id="action_transitops_dashboard" model="ir.actions.act_window">
             <field name="name">Fleet Performance Charts</field>
@@ -150,12 +320,57 @@
             </field>
         </record>
 
+        <!-- Action to open Revenue vs Operational Cost Bar Chart -->
+        <record id="action_transitops_vehicle_revenue_cost" model="ir.actions.act_window">
+            <field name="name">Revenue vs Operational Cost</field>
+            <field name="res_model">transitops.vehicle</field>
+            <field name="view_mode">graph,pivot</field>
+            <field name="view_id" ref="view_transitops_vehicle_revenue_cost_graph"/>
+        </record>
+
+        <!-- Action to open Vehicle Status Pie Chart -->
+        <record id="action_transitops_vehicle_status_pie" model="ir.actions.act_window">
+            <field name="name">Vehicle Status Distribution</field>
+            <field name="res_model">transitops.vehicle</field>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="view_transitops_vehicle_status_pie"/>
+        </record>
+
+        <!-- Action to open Trip Status Analysis -->
+        <record id="action_transitops_trip_status_analysis" model="ir.actions.act_window">
+            <field name="name">Trip Status Analysis</field>
+            <field name="res_model">transitops.trip</field>
+            <field name="view_mode">graph,pivot</field>
+            <field name="view_id" ref="view_transitops_trip_status_graph"/>
+        </record>
+
         <!-- Link Analytics Charts to Menu -->
         <menuitem id="menu_transitops_analytics_charts_action"
                   name="Performance Charts"
                   action="action_transitops_dashboard"
                   parent="menu_transitops_dashboard"
                   sequence="20"/>
+
+        <!-- Link Revenue vs Operational Cost to Menu -->
+        <menuitem id="menu_transitops_revenue_cost_menu"
+                  name="Revenue vs Costs"
+                  action="action_transitops_vehicle_revenue_cost"
+                  parent="menu_transitops_dashboard"
+                  sequence="30"/>
+
+        <!-- Link Vehicle Status Distribution to Menu -->
+        <menuitem id="menu_transitops_vehicle_status_pie_menu"
+                  name="Vehicle Status Pie"
+                  action="action_transitops_vehicle_status_pie"
+                  parent="menu_transitops_dashboard"
+                  sequence="40"/>
+
+        <!-- Link Trip Status Analysis to Menu -->
+        <menuitem id="menu_transitops_trip_status_graph_menu"
+                  name="Trip Analysis"
+                  action="action_transitops_trip_status_analysis"
+                  parent="menu_transitops_dashboard"
+                  sequence="50"/>
 
         <!-- Add Actions for reports as well -->
         <record id="action_transitops_report_roi" model="ir.actions.act_window">
