@@ -1,6 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- Dashboard Form View (Singleton KPI Blocks) -->
+        <record id="view_transitops_dashboard_form" model="ir.ui.view">
+            <field name="name">transitops.dashboard.form</field>
+            <field name="model">transitops.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Fleet KPI Dashboard" create="false" delete="false" edit="false">
+                    <sheet>
+                        <div class="oe_title text-center mb-4">
+                            <h1>TransitOps Fleet Dashboard</h1>
+                            <p class="text-muted">Real-time Smart Transport Operations Metrics</p>
+                        </div>
+                        
+                        <!-- Row 1: Vehicles & Utilization -->
+                        <div class="row text-center mb-4">
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-primary font-weight-bold mb-1">
+                                        <field name="active_vehicles_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Active Vehicles</div>
+                                    <small class="text-info mt-1 d-block">Vehicles on active trips</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-success font-weight-bold mb-1">
+                                        <field name="available_vehicles_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Available Vehicles</div>
+                                    <small class="text-success mt-1 d-block">Ready for dispatch</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-warning font-weight-bold mb-1">
+                                        <field name="maintenance_vehicles_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">In Maintenance</div>
+                                    <small class="text-warning mt-1 d-block">Vehicles in repair shop</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-12 mb-3">
+                                <div class="card border-0 bg-primary text-white shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 font-weight-bold mb-1">
+                                        <field name="fleet_utilization_rate" widget="float" digits="[16,1]"/>%
+                                    </div>
+                                    <div class="font-weight-bold uppercase small">Fleet Utilization</div>
+                                    <small class="text-white-50 mt-1 d-block">Active / Total fleet</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Trips & Drivers -->
+                        <div class="row text-center mb-4">
+                            <div class="col-sm-4 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-info font-weight-bold mb-1">
+                                        <field name="active_trips_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Active Trips</div>
+                                    <small class="text-muted mt-1 d-block">Ongoing dispatches</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-secondary font-weight-bold mb-1">
+                                        <field name="pending_trips_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Pending Trips</div>
+                                    <small class="text-muted mt-1 d-block">Draft/un-dispatched trips</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-12 mb-3">
+                                <div class="card border-0 bg-light shadow-sm p-3" style="border-radius: 8px;">
+                                    <div class="h2 text-dark font-weight-bold mb-1">
+                                        <field name="drivers_on_duty_count"/>
+                                    </div>
+                                    <div class="text-muted font-weight-bold uppercase small">Drivers On Duty</div>
+                                    <small class="text-muted mt-1 d-block">Available or on-trip drivers</small>
+                                </div>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Server Action to open the Singleton Dashboard record -->
+        <record id="action_transitops_dashboard_server" model="ir.actions.server">
+            <field name="name">Fleet Dashboard</field>
+            <field name="model_id" ref="model_transitops_dashboard"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_open_dashboard()
+            </field>
+        </record>
+
+        <!-- Link Main Menu Item to Server Action -->
+        <menuitem id="menu_transitops_dashboard_action"
+                  name="Fleet KPIs &amp; Status"
+                  action="action_transitops_dashboard_server"
+                  parent="menu_transitops_dashboard"
+                  sequence="10"/>
+
         <!-- Vehicle Dashboard Pivot View -->
         <record id="view_transitops_dashboard_pivot" model="ir.ui.view">
             <field name="name">transitops.vehicle.dashboard.pivot</field>
@@ -30,15 +134,15 @@
             </field>
         </record>
 
-        <!-- Action to open Dashboard -->
+        <!-- Action to open Analytics Pivot/Graph -->
         <record id="action_transitops_dashboard" model="ir.actions.act_window">
-            <field name="name">Fleet Dashboard</field>
+            <field name="name">Fleet Performance Charts</field>
             <field name="res_model">transitops.vehicle</field>
-            <field name="view_mode">pivot,graph,tree</field>
-            <field name="view_id" ref="view_transitops_dashboard_pivot"/>
+            <field name="view_mode">graph,pivot,tree</field>
+            <field name="view_id" ref="view_transitops_dashboard_graph"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Welcome to the Fleet Dashboard!
+                    Fleet Performance Charts
                 </p>
                 <p>
                     Analyze operational costs, vehicle ROI, fuel efficiency, and revenues in real-time.
@@ -46,12 +150,12 @@
             </field>
         </record>
 
-        <!-- Link Menu Item to Action -->
-        <menuitem id="menu_transitops_dashboard_action"
-                  name="Fleet Dashboard"
+        <!-- Link Analytics Charts to Menu -->
+        <menuitem id="menu_transitops_analytics_charts_action"
+                  name="Performance Charts"
                   action="action_transitops_dashboard"
                   parent="menu_transitops_dashboard"
-                  sequence="10"/>
+                  sequence="20"/>
 
         <!-- Add Actions for reports as well -->
         <record id="action_transitops_report_roi" model="ir.actions.act_window">
@@ -59,7 +163,6 @@
             <field name="res_model">transitops.vehicle</field>
             <field name="view_mode">graph,pivot</field>
             <field name="view_id" ref="view_transitops_dashboard_graph"/>
-            <field name="parent_item_id" ref="menu_transitops_reports"/>
         </record>
 
         <menuitem id="menu_transitops_report_roi_action"

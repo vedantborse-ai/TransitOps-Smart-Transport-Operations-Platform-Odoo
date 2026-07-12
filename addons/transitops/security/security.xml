@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="module_transitops_category" model="ir.module.category">
+            <field name="name">TransitOps</field>
+            <field name="description">Access levels for TransitOps transport operations platform</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="group_transitops_driver" model="res.groups">
+            <field name="name">Driver</field>
+            <field name="category_id" ref="module_transitops_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_transitops_safety" model="res.groups">
+            <field name="name">Safety Officer</field>
+            <field name="category_id" ref="module_transitops_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_transitops_finance" model="res.groups">
+            <field name="name">Financial Analyst</field>
+            <field name="category_id" ref="module_transitops_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_transitops_manager" model="res.groups">
+            <field name="name">Fleet Manager</field>
+            <field name="category_id" ref="module_transitops_category"/>
+            <field name="implied_ids" eval="[(4, ref('group_transitops_finance')), (4, ref('group_transitops_safety')), (4, ref('group_transitops_driver'))]"/>
+        </record>
+    </data>
+</odoo>

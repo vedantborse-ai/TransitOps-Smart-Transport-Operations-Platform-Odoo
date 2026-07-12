@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, _  # type: ignore[import]
-from odoo.exceptions import ValidationError  # type: ignore[import]
-from datetime import date
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
+from datetime import date, timedelta
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class TransitopsDriver(models.Model):
     _name = 'transitops.driver'
@@ -50,13 +53,28 @@ class TransitopsDriver(models.Model):
             if driver.safety_score < 0.0 or driver.safety_score > 100.0:
                 raise ValidationError(_("Safety score must be between 0 and 100!"))
             if driver.safety_score < 50.0 and driver.status == 'available':
-                # Automatically suspend or warn driver if safety score is too low
-                # mark as suspended
+                # Automatically suspend driver if safety score is too low
                 driver.status = 'suspended'
-
+                
     @api.constrains('license_expiry_date')
     def _check_license_expiry(self):
         for driver in self:
             if driver.license_expiry_date and driver.license_expiry_date < date.today():
-                # ensure driver not available if license expired
-                driver.status = 'off_duty'
+                if driver.status == 'available':
+                    # Set status off_duty if license expired
+                    driver.status = 'off_duty'
+
+    @api.model
+    def _cron_check_license_expiry(self):
+        limit_date = date.today() + timedelta(days=30)
+        expiring_drivers = self.search([
+            ('license_expiry_date', '<=', limit_date),
+            ('license_expiry_date', '>=', date.today()),
+            ('status', '!=', 'suspended')
+        ])
+        for driver in expiring_drivers:
+            _logger.info("TransitOps Alert: Driver %s's license is expiring on %s!", driver.name, driver.license_expiry_date)
+            # Create a chatter message or log note on the driver profile
+            driver.message_post(body=_(
+                "System Alert: Driver's license is expiring soon on %s!"
+            ) % driver.license_expiry_date)

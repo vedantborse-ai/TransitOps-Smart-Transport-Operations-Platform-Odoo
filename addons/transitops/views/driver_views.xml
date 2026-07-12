@@ -6,10 +6,14 @@
             <field name="name">transitops.driver.tree</field>
             <field name="model">transitops.driver</field>
             <field name="arch" type="xml">
-                <tree string="Drivers" decoration-info="status == 'available'" decoration-warning="status == 'on_trip'">
+                <tree string="Drivers" decoration-success="status == 'available'" decoration-info="status == 'on_trip'" decoration-muted="status == 'off_duty'" decoration-danger="status == 'suspended' or is_license_expired">
                     <field name="name"/>
                     <field name="license_number"/>
+                    <field name="license_category"/>
                     <field name="license_expiry_date"/>
+                    <field name="is_license_expired" widget="boolean_toggle"/>
+                    <field name="contact_number"/>
+                    <field name="safety_score" widget="progressbar"/>
                     <field name="status" widget="badge"/>
                 </tree>
             </field>
@@ -20,9 +24,9 @@
             <field name="name">transitops.driver.form</field>
             <field name="model">transitops.driver</field>
             <field name="arch" type="xml">
-                <form string="Driver">
+                <form string="Driver Profile">
                     <header>
-                        <field name="status" widget="statusbar" statusbar_visible="available,on_trip" options="{'clickable': '1'}"/>
+                        <field name="status" widget="statusbar" statusbar_visible="available,on_trip,off_duty,suspended" options="{'clickable': '1'}"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -32,13 +36,32 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
-                                <field name="license_number" placeholder="e.g. DL-987654321"/>
-                            </group>
-                            <group>
+                            <group string="License Credentials">
+                                <field name="license_number"/>
+                                <field name="license_category"/>
                                 <field name="license_expiry_date"/>
+                                <field name="is_license_expired"/>
+                            </group>
+                            <group string="Contact &amp; Performance">
+                                <field name="contact_number"/>
+                                <field name="safety_score"/>
+                                <field name="active"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page string="Trips History" name="trips">
+                                <field name="trip_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="source"/>
+                                        <field name="destination"/>
+                                        <field name="vehicle_id"/>
+                                        <field name="planned_distance"/>
+                                        <field name="status" widget="badge"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -49,32 +72,43 @@
             <field name="name">transitops.driver.search</field>
             <field name="model">transitops.driver</field>
             <field name="arch" type="xml">
-                <search string="Search Drivers">
+                <search string="Search Driver">
                     <field name="name"/>
                     <field name="license_number"/>
+                    <separator/>
                     <filter string="Available" name="available" domain="[('status', '=', 'available')]"/>
                     <filter string="On Trip" name="on_trip" domain="[('status', '=', 'on_trip')]"/>
+                    <filter string="Suspended" name="suspended" domain="[('status', '=', 'suspended')]"/>
+                    <filter string="Expired License" name="expired_license" domain="[('is_license_expired', '=', True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                        <filter string="License Category" name="group_by_license" context="{'group_by': 'license_category'}"/>
+                    </group>
                 </search>
             </field>
         </record>
 
-        <!-- Driver Action -->
+        <!-- Action to open Driver list -->
         <record id="action_transitops_driver" model="ir.actions.act_window">
             <field name="name">Drivers</field>
             <field name="res_model">transitops.driver</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_transitops_driver_search"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Create your first driver!
+                    Add your first driver!
+                </p>
+                <p>
+                    Manage driver profiles, safety scores, and track driving licenses.
                 </p>
             </field>
         </record>
 
-        <!-- Driver Menu Item -->
+        <!-- Link Menu Item to Action -->
         <menuitem id="menu_transitops_driver_action"
                   name="Drivers"
                   action="action_transitops_driver"
-                  parent="menu_transitops_configuration"
-                  sequence="20"/>
+                  parent="menu_transitops_driver"
+                  sequence="10"/>
     </data>
 </odoo>

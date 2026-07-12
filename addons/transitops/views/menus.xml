@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Root Menu -->
+        <menuitem id="menu_transitops_root"
+                  name="TransitOps"
+                  web_icon="transitops,static/description/icon.png"
+                  sequence="10"/>
+
+        <!-- Top level Submenus -->
+        <menuitem id="menu_transitops_dashboard"
+                  name="Dashboard"
+                  parent="menu_transitops_root"
+                  sequence="1"/>
+
+        <menuitem id="menu_transitops_operations"
+                  name="Operations"
+                  parent="menu_transitops_root"
+                  sequence="10"/>
+
+        <menuitem id="menu_transitops_finance"
+                  name="Financials"
+                  parent="menu_transitops_root"
+                  sequence="20"/>
+
+        <menuitem id="menu_transitops_reports"
+                  name="Reports &amp; Analytics"
+                  parent="menu_transitops_root"
+                  sequence="30"/>
+
+        <!-- Leaf Menu Items under Operations -->
+        <menuitem id="menu_transitops_vehicle"
+                  name="Vehicles"
+                  parent="menu_transitops_operations"
+                  sequence="10"/>
+
+        <menuitem id="menu_transitops_driver"
+                  name="Drivers"
+                  parent="menu_transitops_operations"
+                  sequence="20"/>
+
+        <menuitem id="menu_transitops_trip"
+                  name="Trips"
+                  parent="menu_transitops_operations"
+                  sequence="30"/>
+
+        <menuitem id="menu_transitops_maintenance"
+                  name="Maintenance Logs"
+                  parent="menu_transitops_operations"
+                  sequence="40"/>
+
+        <!-- Leaf Menu Items under Financials -->
+        <menuitem id="menu_transitops_fuel_log"
+                  name="Fuel Logs"
+                  parent="menu_transitops_finance"
+                  sequence="10"/>
+
+        <menuitem id="menu_transitops_expense"
+                  name="Other Expenses"
+                  parent="menu_transitops_finance"
+                  sequence="20"/>
+    </data>
+</odoo>
