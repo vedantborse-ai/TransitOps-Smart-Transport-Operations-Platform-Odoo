@@ -23,6 +23,34 @@ class TransitopsVehicle(models.Model):
     odometer = fields.Float(string='Odometer (km)', default=0.0)
     region = fields.Char(string='Region')
 
+    brand = fields.Char(
+        string="Brand"
+    )
+
+    manufacture_year = fields.Integer(
+        string="Manufacture Year"
+    )
+
+    fuel_type = fields.Selection(
+        [
+            ("petrol", "Petrol"),
+            ("diesel", "Diesel"),
+            ("electric", "Electric"),
+            ("hybrid", "Hybrid"),
+        ],
+        string="Fuel Type",
+        default="diesel",
+    )
+
+    registration_document = fields.Binary(
+        string="Registration Certificate"
+    )
+
+    insurance_document = fields.Binary(
+        string="Insurance Policy"
+    )
+    
+
     # Relations to allow dependencies/computations
     fuel_log_ids = fields.One2many('transitops.fuel.log', 'vehicle_id', string='Fuel Logs')
     expense_ids = fields.One2many('transitops.expense', 'vehicle_id', string='Expenses')
@@ -59,3 +87,15 @@ class TransitopsVehicle(models.Model):
                 vehicle.fuel_efficiency = total_distance / fuel_liters
             else:
                 vehicle.fuel_efficiency = 0.0
+
+    def write(self, vals):
+        res = super().write(vals)
+
+        if 'odometer' in vals:
+            for vehicle in self:
+                self.env['transitops.vehicle.odometer.log'].create({
+                    'vehicle_id': vehicle.id,
+                    'value': vehicle.odometer,
+                })
+
+        return res
