@@ -128,9 +128,6 @@ class TransitopsTrip(models.Model):
 
     def unlink(self):
         for trip in self:
-            if trip.status == 'dispatched':
-                if trip.vehicle_id and trip.vehicle_id.status == 'on_trip':
-                    trip.vehicle_id.status = 'available'
-                if trip.driver_id and trip.driver_id.status == 'on_trip':
-                    trip.driver_id.status = 'available'
+            if trip.status not in ('draft', 'cancelled'):
+                raise ValidationError(_("For audit and data integrity reasons, you can only delete draft or cancelled trips. Dispatched or completed trips cannot be deleted."))
         return super(TransitopsTrip, self).unlink()
