@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Driver Tree View -->
+        <record id="view_transitops_driver_tree" model="ir.ui.view">
+            <field name="name">transitops.driver.tree</field>
+            <field name="model">transitops.driver</field>
+            <field name="arch" type="xml">
+                <tree string="Drivers" decoration-info="status == 'available'" decoration-warning="status == 'on_trip'">
+                    <field name="name"/>
+                    <field name="license_number"/>
+                    <field name="license_expiry_date"/>
+                    <field name="status" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Driver Form View -->
+        <record id="view_transitops_driver_form" model="ir.ui.view">
+            <field name="name">transitops.driver.form</field>
+            <field name="model">transitops.driver</field>
+            <field name="arch" type="xml">
+                <form string="Driver">
+                    <header>
+                        <field name="status" widget="statusbar" statusbar_visible="available,on_trip" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. John Doe"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="license_number" placeholder="e.g. DL-987654321"/>
+                            </group>
+                            <group>
+                                <field name="license_expiry_date"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Driver Search View -->
+        <record id="view_transitops_driver_search" model="ir.ui.view">
+            <field name="name">transitops.driver.search</field>
+            <field name="model">transitops.driver</field>
+            <field name="arch" type="xml">
+                <search string="Search Drivers">
+                    <field name="name"/>
+                    <field name="license_number"/>
+                    <filter string="Available" name="available" domain="[('status', '=', 'available')]"/>
+                    <filter string="On Trip" name="on_trip" domain="[('status', '=', 'on_trip')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Driver Action -->
+        <record id="action_transitops_driver" model="ir.actions.act_window">
+            <field name="name">Drivers</field>
+            <field name="res_model">transitops.driver</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first driver!
+                </p>
+            </field>
+        </record>
+
+        <!-- Driver Menu Item -->
+        <menuitem id="menu_transitops_driver_action"
+                  name="Drivers"
+                  action="action_transitops_driver"
+                  parent="menu_transitops_configuration"
+                  sequence="20"/>
+    </data>
+</odoo>
